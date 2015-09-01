@@ -1,0 +1,54 @@
+#!/bin/bash
+
+echo "Hello, "$USER", let's start up our new app."
+echo -n "MySQL [mysql] or MongoDB [mongo]?"
+read dbtype
+
+echo -n "Database host:"
+read dbhost
+echo -n "Database port:"
+read dbport
+echo -n "Database user:"
+read dbuser
+echo -n "Database password:"
+read dbpassword
+echo -n "Default database:"
+read db
+
+if [ "$dbtype" == "mysql" ]; then
+	echo -n "How many pooled connections?";
+	read dbpool
+fi
+
+if [ -z $dbhost ]; then
+	dbhost="localhost"
+fi
+if [ -z $dbuser ]; then
+	dbuser="root"
+fi
+if [ -z $dbpassword ]; then
+	dbpassword="root"
+fi
+if [ -z $dbport ] && [ "$dbtype" == "mongo" ]; then
+	dbport=33601
+elif [ -z $dbport ] && [ "$dbtype" == "mysql" ]; then
+	dbport=3306
+fi
+if [ -z $dbpool ]; then
+	dbpool=100
+fi
+
+ssh-keygen -f app/config/jwtkey -N ''
+echo "module.exports = {
+    baseurl: \"http://localhost:3000\",
+    SHOW_DEBUG: true,
+    SHOW_ERRORS: true,
+    SHOW_ALL: true,
+    DB_TYPE: '$dbtype',
+    DB_HOST: '$dbhost',
+    DB_PORT: '$dbport',
+    DB_DATABASE: '$db',
+    DB_USERNAME: '$dbuser',
+    DB_PASSWORD: '$dbpassword',
+    DB_POOL: $dbpool
+};" > app/config/config.js

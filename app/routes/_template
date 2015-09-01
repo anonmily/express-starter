@@ -1,0 +1,23 @@
+module.exports= function(db){
+	var express 	= require('express'),
+		router 		= express.Router(),
+		
+		models 		= require('../models')(db),
+		//Session		= models.session,
+
+		async 		= require('async'),
+		utils 		= require('../utils')(db),
+		is			= require('simply-is'),
+		to 			= utils.tools.to(),
+		response	= utils.response;
+
+	router.get('/', function(req, res) {
+		res.send('GET / response');
+	});
+	router.post('/',function(req,res){
+		res.send('POST / response');
+	});
+
+	return router;
+
+};

@@ -1,0 +1,31 @@
+#!/bin/bash
+
+new=$1
+name=$2
+crud=$3
+
+echo $new
+echo $name
+
+if [ -z $name ]; then
+	echo 'Desired name?'
+	read name
+fi
+
+if [ $new == "route" ]; then
+	cp app/routes/_template app/routes/$name.js
+elif [ $new == "model" ]; then
+	if [ -z $crud ]; then
+		echo "Make a CRUD model? [Y/N]"
+		read -n 1 crud
+	fi
+		
+	if [ $crud == "Y" ]; then
+		cp app/models/_crudtemplate app/models/$name.js
+	else
+		cp app/models/_template app/models/$name.js	
+	fi	
+elif [ $new == "modelroute" ]; then
+	cp app/routes/_template app/routes/$name.js
+	cp app/models/_template app/models/$name.js
+fi
