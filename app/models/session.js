@@ -1,6 +1,6 @@
 var jwt = require('jsonwebtoken'),
 	fs = require('fs'),
-	//privatekey = fs.readFileSync('./app/config/jwtkey.pem'),
+	//privatekey = fs.readFileSync('./app/config/jwtkey'),
 	publickey = fs.readFileSync('./app/config/jwtkey.pub');
 
 var session = {};

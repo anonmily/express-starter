@@ -1,0 +1,43 @@
+module.exports= function(db){
+	var async = require('async'),
+		_		= require('lodash'),
+		utils = require('../utils')(db),
+		to	= utils.tools.to(),
+		is	= require('simply-is'),
+		get = utils.db.get,
+		modelSchema = {
+			general: {
+				select: [],
+				from: '',
+				database: '',
+				join: [
+					{
+						table: '',
+						type: '',
+						on: ''
+					}
+				],
+				groupby: [],
+				override: [
+					{table: '', col: ''}
+				]
+			}
+		},
+		CRUD = require('./crud');
+
+	var model = {};
+
+	model.get = function(filters, limit, callback){
+		var schema = modelSchema.general;
+		schema.criteria = is.empty(filters) ? {} : filters;
+		schema.limit = limit;
+		//get(schema,callback);
+		get(schema,function(err,results){
+			// do something with data
+			callback(err,results);
+		});	
+	};
+
+
+	return model;
+};

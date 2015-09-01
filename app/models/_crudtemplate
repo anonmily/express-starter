@@ -1,0 +1,32 @@
+module.exports= function(db){
+	var CRUD = require('./crud'),
+		config = require('../config/config.js'),
+		schema = {
+			select: [
+				'id',
+				'name',
+				'title',
+				'group',
+				'content',
+				'created',
+				'modified'
+			],
+			from: 'pages',
+			database: config.DB_DATABASE || 'test'
+		},
+		model = new CRUD(db, schema);
+/*
+	pages.setCreateDefaults({
+		created: "UTC_TIMESTAMP()",
+		modified: "UTC_TIMESTAMP()"
+	});
+	pages.setUpdateDefaults({
+		modified: "UTC_TIMESTAMP()"
+	});
+*/	
+	model.new = model.create;
+	model.get = model.read;
+	model.edit = model.update;
+
+	return model;
+};
